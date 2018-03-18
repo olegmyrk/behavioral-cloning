@@ -1,4 +1,4 @@
-Based on [Udacity Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim)
+Behavioral cloning based on [Udacity Self-Driving Car Simulator](https://github.com/udacity/self-driving-car-sim)
 
 **Project Structure**
 
