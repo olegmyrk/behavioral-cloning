@@ -1,8 +1,6 @@
-#**Behavioral Cloning** 
+*Behavioral Cloning*
 
-
-**Behavioral Cloning Project**
-
+**Project Structure**
 My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
@@ -20,7 +18,7 @@ and for advanced track:
 ```sh
 python drive.py advanced.learned.log ./advanced.0.32x32.tpp.w1.bw.augmentedx.t100k 20
 ```
-Here 20 stands for maximum speed. At least on my Mac it seems that the simulator is lagging and I am receiving three identical consequent frames in a row. It might be able to drive at 30 on a faster computer. 
+Here 20 stands for maximum speed. At least on my Mac it seems that the simulator is lagging and I am receiving three identical consequent frames in a row. It might be able to drive at 30 on a faster computer.
 
 There is also a policy trained for both tracks simultaneously which can (almost) drive both tracks at 15 mph:
 ```sh
@@ -35,52 +33,52 @@ I also experimented with predicting steering angle at the next step instead of s
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture and Training Strategy
+**Model Architecture and Training Strategy**
 
-####1. Model architecture 
+***Model architecture***
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths 16-32-64 (model.py function `learn_build_model()`), followed by 4 fully connected layers of sizes 256-128-64-1. The model includes RELU layers to introduce nonlinearity.
 
 Frames are resized to 32x32 pixels without antialiasing and normalized by converting image to black-and-white, subtracting image mean, and dividing by stddev (see model.py function `learn_load_data()`).
 
-####2. Attempts to reduce overfitting in the model
+***Attempts to reduce overfitting in the model***
 
-The model contains dropout layers in order to reduce overfitting. 
+The model contains dropout layers in order to reduce overfitting.
 
 L2 regularization of weights of fully connected layers was implemented to combat overfitting.
 
 The model was trained, validated, and tested on different data sets to ensure that the model was not overfitting (model.py function `learn_split_data()`)
 
-The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track at 20mph. 
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track at 20mph.
 
-####3. Model parameter tuning
+***Model parameter tuning***
 
 The model used an adam optimizer (with rate = 0.001). Training time dropout was empirically selected to be 0.9 to improve convergence speed. L2 regularization weight was set to 0.01.
 
-####4. Appropriate training data
+***Appropriate training data***
 
 To compensate for training data noisiness, model target was set to:
 ```
 (current_steering_decision + 0.75*next_steering_decision)/1.75
 ```
 
-###Model Architecture and Training Strategy
+**Model Architecture and Training Strategy**
 
-####1. Solution Design Approach
+***Solution Design Approach***
 
-The general network architeture was inspired by NVIDIA's behavioral cloning paper.
+The general network architecture was inspired by NVIDIA's behavioral cloning paper.
 
 The following data augmentation techniques were used:
 * Flipping training data across x-dimension
-* Simulating various forms of shades on frames (because all training data was collected in "fastest" mode without shades") 
+* Simulating various forms of shades on frames (because all training data was collected in "fastest" mode without shades")
 
-As a final out-of-sample testing step I manually reversed the car direction and let the learned policies drive at 20mph in reverse direction (sucessfully). 
+As a final out-of-sample testing step I manually reversed the car direction and let the learned policies drive at 20mph in reverse direction (sucessfully).
 
-####2. Final Model Architecture
+***Final Model Architecture***
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths 16-32-64, followed by 4 fully connected layers of sizes 256-128-64-1. The model includes RELU layers to introduce nonlinearity. Dropout and L2 regularization of fully-connected weights is applied.
 
-####3. Creation of the Training Set & Training Process
+***Creation of the Training Set & Training Process***
 
 Instead of collecting training data manually, I wrote a handcrafted policy using opencv segmentation to find road on the frames, and then trained behavioral cloning on top of automatically collected training data. For exploration I also added Gaussian noise with stddev=0.1 to handcrafted steering policy. You can see example videos of handcrafted policy in "basic.handcrafted.mp4" and "advanced.handcrafted.mp4". As You can see the handcrafted policy barely drives so my behavioral cloning task is actually harder training than from human generated data. Also the handcrafted policy fails when there are shades on the road so the training data was collected in "fastest" mode without any shades. The demonstration videos "basic.learned.mp4" and "advanced.learned.mp4" were collected in "good" mode with shades.
 
