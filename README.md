@@ -10,6 +10,7 @@ My project includes the following files:
 * basic.learned.mp4 - video of learned policy for basic track
 * advanced.learned.mp4 - video of learned policy for advanced track
 * writeup_report.md summarizing the results
+* simulator-macos.zip - cached version of simulator
 
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing for basic track:
 ```sh
